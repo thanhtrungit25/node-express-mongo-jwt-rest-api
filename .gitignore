@@ -62,5 +62,7 @@ typings/
 # next.js build output
 .next
 
+.vscode
+
 # don't ignore keep files
 !.gitkeep

@@ -1,7 +1,14 @@
 const crypto = require('crypto')
+const requestIp = require('request-ip')
 const algorithm = 'aes-256-ecb'
 const password = process.env.JWT_SECRET
 const User = require('../models/user')
+
+exports.getIP = req => requestIp.getClientIp(req)
+
+exports.getBrowserInfo = req => req.headers['user-agent']
+
+exports.getCountry = req => req.headers['cf-ipcountry'] ? req.headers['cf-ipcountry'] : 'XX'
 
 exports.emailExists = async email => {
   return new Promise((resolve, reject) => {

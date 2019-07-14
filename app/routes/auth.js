@@ -14,4 +14,11 @@ router.post(
   controller.register
 )
 
+router.post(
+  '/login',
+  trimRequest.all,
+  validate.login,
+  controller.login
+)
+
 module.exports = router

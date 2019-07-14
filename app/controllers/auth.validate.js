@@ -37,3 +37,29 @@ exports.register = [
       }
     }
 ]
+
+exports.login = [
+  check('email')
+    .exists()
+    .withMessage('MISSING')
+    .not()
+    .isEmpty()
+    .withMessage('IS_EMPTY')
+    .isEmail()
+    .withMessage('EMAIL_IS_NOT_VALID')
+    .normalizeEmail(),
+  check('password')
+    .exists()
+    .withMessage('MISSING')
+    .not()
+    .isEmpty()
+    .withMessage('IS_EMPTY'),
+  (req, res, next) => {
+    try {
+      validationResult(req).throw()
+      return next()
+    } catch (err) {
+      return base.handleError(res, base.buildErrObject(422, err.array()))
+    }
+  }
+]
