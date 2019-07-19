@@ -6,7 +6,7 @@
 
 ## Getting started
 
-This is a basic API REST skeleton written on JavaScript using ES7 async/await.
+This is a basic API REST skeleton written on JavaScript using ES7 async/await. Great for building an MVP for your front-end app (Vue, react, angular, or anything that can consume an API)
 
 This project is created to help other developers create a **basic REST API in an easy way with Node.js**. This basic example shows how powerful and simple JavaScript can be. Do you want to contribute? Pull requests are always welcome to show more features.
 
@@ -35,7 +35,7 @@ Formatting source code is brought to you by `prettier`. Also `ESLint` is used fo
 ## Requirements
 
 - Node.js **8+**
-- MongoDB **3.6**
+- MongoDB **3.6+**
 
 ## How to install
 
@@ -63,7 +63,7 @@ npm install nodemon -g
 
 1. In the root this repository you will find a file named `.env.example`
 2. Create a new file by copying and pasting the file and then renaming it to just `.env`
-3. The file `.env`is already ignored, so you never commit your credentials and do something dumb
+3. The file `.env`is already ignored, so you never commit your credentials.
 4. Change the values of the file to your environment (development or production)
 5. Upload the `.env` to your environment server(development or production)
 
