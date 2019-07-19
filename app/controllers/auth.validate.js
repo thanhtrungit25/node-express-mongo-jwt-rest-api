@@ -13,7 +13,9 @@ exports.register = [
     .withMessage('MISSING')
     .not()
     .isEmpty()
-    .withMessage('IS_EMPTY'),
+    .withMessage('IS_EMPTY')
+    .isEmail()
+    .withMessage('EMAIL_IS_NOT_VALID'),
   check('password')
     .exists()
     .withMessage('MISSING')

@@ -69,6 +69,7 @@ const registerUser = async req => {
       password: req.password,
       verification: uuid.v4()
     })
+    console.log('user:', user)
     user.save((err, item) => {
       if (err) {
         reject(base.buildErrObject(422, err.message))
