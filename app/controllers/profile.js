@@ -7,7 +7,7 @@ const model = require('../models/user')
 
 const getProfileFromDB = async id => {
   return new Promise((resolve, reject) => {
-    model.findById(id, '-role -_id -updatedAt -createdAt', (err, user) => {
+    model.findById(id, '-_id -updatedAt -createdAt', (err, user) => {
       if (err) {
         reject(base.buildErrObject(422, err.message))
       }
@@ -45,7 +45,6 @@ const updateProfileInDB = async (req, id) => {
         // Convert user to object and remove unneeded properties
         const userObject = item.toObject()
         delete userObject._id
-        delete userObject.role
         delete userObject.password
         delete userObject.createdAt
         delete userObject.updatedAt
