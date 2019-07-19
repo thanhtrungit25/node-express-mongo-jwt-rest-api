@@ -4,15 +4,10 @@ const models = ['user', 'userAccess', 'city', 'forgotPassword']
 
 initMongo()
 
-const completed = () => {
-  console.log('Cleanup complete!')
-  process.exit(0)
-}
-
-const processModels = model =>
+const deleteModelFromDB = model =>
   new Promise((resolve, reject) => {
     model = require(`./app/models/${model}`)
-    model.remove({}, (err, row) => {
+    model.deleteMany({}, (err, row) => {
       if (err) {
         reject(err)
       } else {
@@ -21,4 +16,17 @@ const processModels = model =>
     })
   })
 
-Promise.all(models.map(processModels)).then(completed)
+const clean = async () => {
+  try {
+    const promiseArray = models.map(
+      async model => await deleteModelFromDB(model)
+    )
+    await Promise.all(promiseArray)
+    process.exit(0)
+  } catch (err) {
+    console.log(err)
+    process.exit(0)
+  }
+}
+
+clean()
