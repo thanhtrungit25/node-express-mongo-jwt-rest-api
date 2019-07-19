@@ -9,6 +9,15 @@ exports.updateProfile = [
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
+  check('password')
+    .optional()
+    .not()
+    .isEmpty()
+    .withMessage('IS_EMPTY')
+    .isLength({
+      min: 5
+    })
+    .withMessage('PASSWORD_TOO_SHORT_MIN_5'),
   check('headline')
     .optional()
     .isLength({
