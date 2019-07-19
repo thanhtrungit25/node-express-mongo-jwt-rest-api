@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt-nodejs')
 const validator = require('validator')
-const mongoosePaginate = require('mongoose-paginate')
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 const UserSchema = new mongoose.Schema(
   {
@@ -110,7 +110,7 @@ UserSchema.pre('save', function(next) {
   return genSalt(that, SALT_FACTOR, next)
 })
 
-UserSchema.methods.comparePassword = function(passwordAttempt, cb) {
+UserSchema.methods.comparePbassword = function(passwordAttempt, cb) {
   bcrypt.compare(passwordAttempt, this.password, (err, isMatch) =>
     err ? cb(err) : cb(null, isMatch)
   )
