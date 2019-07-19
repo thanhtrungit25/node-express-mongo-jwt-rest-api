@@ -32,13 +32,13 @@ const setUserInfo = req => {
 }
 
 const saveUserAccessAndReturnToken = async (req, user) => {
-  const userAccess = new UserAccess({
-    email: user.email,
-    ip: base.getIP(req),
-    browser: base.getBrowserInfo(req),
-    country: base.getCountry(req)
-  })
   return new Promise((resolve, reject) => {
+    const userAccess = new UserAccess({
+      email: user.email,
+      ip: base.getIP(req),
+      browser: base.getBrowserInfo(req),
+      country: base.getCountry(req)
+    })
     userAccess.save(err => {
       if (err) {
         reject(base.buildErrObject(422, err.message))
@@ -62,13 +62,13 @@ const returnRegisterToken = (item, userInfo) => {
 }
 
 const registerUser = async req => {
-  const user = new User({
-    name: req.name,
-    email: req.email,
-    password: req.password,
-    verification: uuid.v4()
-  })
   return new Promise((resolve, reject) => {
+    const user = new User({
+      name: req.name,
+      email: req.email,
+      password: req.password,
+      verification: uuid.v4()
+    })
     user.save((err, item) => {
       if (err) {
         reject(base.buildErrObject(422, err.message))
@@ -221,8 +221,8 @@ const verificationExists = async id => {
 }
 
 const verifyUser = async user => {
-  user.verified = true
   return new Promise((resolve, reject) => {
+    user.verified = true
     user.save((err, item) => {
       if (err) {
         reject(base.buildErrObject(422, err.message))
@@ -236,14 +236,14 @@ const verifyUser = async user => {
 }
 
 const saveForgotPassword = async req => {
-  const forgot = new ForgotPassword({
-    email: req.body.email,
-    verification: uuid.v4(),
-    ipRequest: base.getIP(req),
-    browserRequest: base.getBrowserInfo(req),
-    countryRequest: base.getCountry(req)
-  })
   return new Promise((resolve, reject) => {
+    const forgot = new ForgotPassword({
+      email: req.body.email,
+      verification: uuid.v4(),
+      ipRequest: base.getIP(req),
+      browserRequest: base.getBrowserInfo(req),
+      countryRequest: base.getCountry(req)
+    })
     forgot.save((err, item) => {
       if (err) {
         reject(base.buildErrObject(422, err.message))
@@ -293,8 +293,8 @@ const findUserToResetPassword = async email => {
 }
 
 const updatePassword = async (password, user) => {
-  user.password = password
   return new Promise((resolve, reject) => {
+    user.password = password
     user.save((err, item) => {
       if (err) {
         reject(base.buildErrObject(422, err.message))
@@ -308,11 +308,11 @@ const updatePassword = async (password, user) => {
 }
 
 const markResetPasswordAsUsed = async (req, forgot) => {
-  forgot.used = true
-  forgot.ipChanged = base.getIP(req)
-  forgot.browserChanged = base.getBrowserInfo(req)
-  forgot.countryChanged = base.getCountry(req)
   return new Promise((resolve, reject) => {
+    forgot.used = true
+    forgot.ipChanged = base.getIP(req)
+    forgot.browserChanged = base.getBrowserInfo(req)
+    forgot.countryChanged = base.getCountry(req)
     forgot.save((err, item) => {
       if (err) {
         reject(base.buildErrObject(422, err.message))

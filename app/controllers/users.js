@@ -73,17 +73,17 @@ const deleteItem = async id => {
 }
 
 const createItem = async req => {
-  const user = new model({
-    name: req.name,
-    email: req.email,
-    password: req.password,
-    role: req.role,
-    phone: req.phone,
-    city: req.city,
-    country: req.country,
-    verification: uuid.v4()
-  })
   return new Promise((resolve, reject) => {
+    const user = new model({
+      name: req.name,
+      email: req.email,
+      password: req.password,
+      role: req.role,
+      phone: req.phone,
+      city: req.city,
+      country: req.country,
+      verification: uuid.v4()
+    })
     user.save((err, item) => {
       if (err) {
         reject(base.buildErrObject(422, err.message))

@@ -110,7 +110,7 @@ UserSchema.pre('save', function(next) {
   return genSalt(that, SALT_FACTOR, next)
 })
 
-UserSchema.methods.comparePbassword = function(passwordAttempt, cb) {
+UserSchema.methods.comparePassword = function(passwordAttempt, cb) {
   bcrypt.compare(passwordAttempt, this.password, (err, isMatch) =>
     err ? cb(err) : cb(null, isMatch)
   )
