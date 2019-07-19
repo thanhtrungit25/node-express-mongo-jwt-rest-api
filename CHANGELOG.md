@@ -1,3 +1,7 @@
+## v.1.2.3
+
+- FIXED: Password not encrypted when updating in profile [\#3](https://github.com/davellanedam/node-express-mongodb-jwt-rest-api-skeleton/issues/3)
+
 ## v.1.2.1
 
 - Cache API responses only in production mode

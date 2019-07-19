@@ -102,8 +102,10 @@ const genSalt = (user, SALT_FACTOR, next) => {
 }
 
 UserSchema.pre('save', function(next) {
+  console.log('pre save')
   const that = this
   const SALT_FACTOR = 5
+  console.log('password is modifiled:', that.isModified('password'))
   if (!that.isModified('password')) {
     return next()
   }

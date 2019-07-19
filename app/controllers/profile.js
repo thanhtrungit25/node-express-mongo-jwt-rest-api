@@ -24,24 +24,34 @@ const updateProfileInDB = async (req, id) => {
     delete req.body._id
     delete req.body.role
     delete req.body.email
-    model.findByIdAndUpdate(
-      id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-        select: '-role -_id, -updatedAt -createdAt'
-      },
-      (err, user) => {
-        if (err) {
+    model.findById(id, '+password', (err, user) => {
+      if (err) {
+        reject(base.buildErrObject(422, err.message))
+      }
+      if (!user) {
+        reject(base.buildErrObject(404, 'NOT_FOUND'))
+      }
+
+      // Assign new values
+      for (const field in req.body) {
+        user[field] = req.body[field]
+      }
+
+      // Save in DB
+      user.save((error, item) => {
+        if (error) {
           reject(base.buildErrObject(422, err.message))
         }
-        if (!user) {
-          reject(base.buildErrObject(404, 'NOT_FOUND'))
-        }
-        resolve(user)
-      }
-    )
+        // Convert user to object and remove unneeded properties
+        const userObject = item.toObject()
+        delete userObject._id
+        delete userObject.role
+        delete userObject.password
+        delete userObject.createdAt
+        delete userObject.updatedAt
+        resolve(userObject)
+      })
+    })
   })
 }
 
