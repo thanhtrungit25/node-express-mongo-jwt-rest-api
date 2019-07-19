@@ -138,11 +138,16 @@ describe('*********** CITIES ***********', () => {
 })
 
 after(() => {
-  createdID.forEach(id => {
-    City.findByIdAndRemove(id, err => {
-      if (err) {
-        console.log(err)
+  createdID.map(item => {
+    City.deleteOne(
+      {
+        _id: item
+      },
+      error => {
+        if (error !== null) {
+          console.log(error)
+        }
       }
-    })
+    )
   })
 })

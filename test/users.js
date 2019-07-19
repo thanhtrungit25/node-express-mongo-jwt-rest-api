@@ -253,11 +253,16 @@ describe('*********** USERS ***********', () => {
 })
 
 after(() => {
-  createdID.forEach(id => {
-    User.findByIdAndRemove(id, err => {
-      if (err) {
-        console.log(err)
+  createdID.map(item => {
+    User.deleteOne(
+      {
+        _id: item
+      },
+      error => {
+        if (error !== null) {
+          console.log(error)
+        }
       }
-    })
+    )
   })
 })
