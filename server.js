@@ -35,6 +35,7 @@ app.use(helmet())
 
 // Redis cache enabled only for production
 if (process.env.NODE_ENV === 'production') {
+  console.log('redis init production mode')
   const getExpeditiousCache = require('express-expeditious')
   const cache = getExpeditiousCache({
     // Namespace used to prevent cache conflicts, must be alphanumeric
