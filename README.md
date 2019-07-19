@@ -18,6 +18,7 @@ Formatting source code is brought to you by `prettier`. Also `ESLint` is used fo
 - Custom email/password user system with basic security and blocking for preventing brute force attacks
 - Compressed responses.
 - CORS ready.
+- Cache ready (Redis)
 - Use roles.
 - Pagination ready.
 - User profile.
@@ -36,6 +37,7 @@ Formatting source code is brought to you by `prettier`. Also `ESLint` is used fo
 
 - Node.js **8+**
 - MongoDB **3.6+**
+- Redis **5.0+**
 
 ## How to install
 

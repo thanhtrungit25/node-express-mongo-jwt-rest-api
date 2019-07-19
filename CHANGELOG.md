@@ -1,3 +1,8 @@
+## v.1.2.0
+
+- Use of REDIS to cache API responses
+- NPM updated
+
 ## v.1.1.3 (Oct 24, 2018)
 
 - Seeding Fix due to changes on new mongo-seeding package
