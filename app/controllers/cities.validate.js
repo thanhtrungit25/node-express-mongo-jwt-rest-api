@@ -1,66 +1,31 @@
 const base = require('./base')
 const { check, validationResult } = require('express-validator/check')
 
-exports.register = [
+exports.createItem = [
+  check('name')
+    .exists()
+    .withMessage('MISSING')
+    .not()
+    .isEmpty()
+    .withMessage('IS_EMPTY')
+    .trim(),
+  (req, res, next) => {
+    try {
+      validationResult(req).throw()
+      return next()
+    } catch (err) {
+      return base.handleError(res, base.buildErrObject(422, err.array()))
+    }
+  }
+]
+
+exports.updateItem = [
   check('name')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
-  check('email')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY'),
-  check('password')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .isLength({
-      min: 5
-    })
-    .withMessage('PASSWORD_TOO_SHORT_MIN_5'),
-  (req, res, next) => {
-    try {
-      validationResult(req).throw()
-      return next()
-    } catch (err) {
-      return base.handleError(res, base.buildErrObject(422, err.array()))
-    }
-  }
-]
-
-exports.login = [
-  check('email')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .isEmail()
-    .withMessage('EMAIL_IS_NOT_VALID')
-    .normalizeEmail(),
-  check('password')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY'),
-  (req, res, next) => {
-    try {
-      validationResult(req).throw()
-      return next()
-    } catch (err) {
-      return base.handleError(res, base.buildErrObject(422, err.array()))
-    }
-  }
-]
-
-exports.verify = [
   check('id')
     .exists()
     .withMessage('MISSING')
@@ -77,16 +42,13 @@ exports.verify = [
   }
 ]
 
-exports.forgotPassword = [
-  check('email')
+exports.getItem = [
+  check('id')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
-    .withMessage('IS_EMPTY')
-    .isEmail()
-    .withMessage('EMAIL_IS_NOT_VALID')
-    .normalizeEmail(),
+    .withMessage('IS_EMPTY'),
   (req, res, next) => {
     try {
       validationResult(req).throw()
@@ -97,23 +59,13 @@ exports.forgotPassword = [
   }
 ]
 
-exports.resetPassword = [
+exports.deleteItem = [
   check('id')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
-  check('password')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .isLength({
-      min: 5
-    })
-    .withMessage('PASSWORD_TOO_SHORT_MIN_5'),
   (req, res, next) => {
     try {
       validationResult(req).throw()

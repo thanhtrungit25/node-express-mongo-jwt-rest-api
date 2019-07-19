@@ -14,11 +14,22 @@ router.post(
   controller.register
 )
 
+router.post('/verify', trimRequest.all, validate.verify, controller.verify)
+
 router.post(
-  '/login',
+  '/forgot',
   trimRequest.all,
-  validate.login,
-  controller.login
+  validate.forgotPassword,
+  controller.forgotPassword
 )
+
+router.post(
+  '/reset',
+  trimRequest.all,
+  validate.resetPassword,
+  controller.resetPassword
+)
+
+router.post('/login', trimRequest.all, validate.login, controller.login)
 
 module.exports = router

@@ -14,13 +14,23 @@ Formatting source code is brought to you by `prettier`. Also `ESLint` is used fo
 
 ## Features
 
-- JWT Tokens, provide login with `Authorization` header with value `Basic username:password` where `username:password` **MUST BE ENCODED** with `Base64`.
-- Make requests with a token after login with `Authorization` header with value `Bearer yourToken` where `yourToken` is the **signed and encrypted token** given in the response from the login process.
-- Use roles for users.
+- Multiple environment ready (development, production)
+- Custom email/password user system with basic security and blocking for preventing brute force attacks
+- Compressed responses.
+- CORS ready.
+- Use roles.
 - Pagination ready.
 - User profile.
 - Users list.
-- Cities. (Example of use: call cities API, then send name of the city when creating or updating a user.
+- Cities model and controller example.
+- Login access log with IP, browser, and country location (for country it looks for the header `cf-ipcountry`)
+- Testing with mocha/chai for API endpoints.
+- NPM scripts for cleaning and seeding the MongoDB database.
+- NPM script for keeping good source code formatting using prettier and ESLint
+- Use of ESLint for good coding practices.
+- Mailer example with Nodemailer and Mailgun.
+- Ability to refresh token
+- JWT Tokens, make requests with a token after login with Authorization header with value Bearer yourtoken where `yourtoken` is the **signed and encrypted token** given in the response from the login process.
 
 ## Requirements
 
@@ -101,6 +111,22 @@ It´s a good practice to do tests at your code, so a sample of how to do that in
 
 ```bash
 npm run test
+```
+
+### Formatting code
+
+Format your code with prettier by typing:
+
+```bash
+npm run format
+```
+
+### Linting code
+
+Lint your code with ESLint by typing:
+
+```base
+npm run lint
 ```
 
 ## Usage

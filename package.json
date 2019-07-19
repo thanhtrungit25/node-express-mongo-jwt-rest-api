@@ -8,11 +8,14 @@
   "license": "MIT",
   "scripts": {
     "start": "NODE_ENV=production pm2 start server.js --watch",
-    "test": "mocha --no-deprecation --timeout=5000",
+    "mocha": "nyc mocha --timeout=5000 --exit",
+    "test": "npm run fresh && mocha --no-deprecation --timeout=5000",
     "dev": "NODE_ENV=development nodemon --no-deprecation server.js",
     "fresh": "npm run clean && npm run seed",
     "clean": "node --no-deprecation clean.js",
-    "seed": "node --no-deprecation seed.js"
+    "seed": "node --no-deprecation seed.js",
+    "format": "prettier --write --config .prettierrc.json \"**/*.js\"",
+    "lint": "eslint --fix --config .eslintrc.json \"**/*.js\""
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
@@ -47,6 +50,7 @@
     "faker": "^4.1.0",
     "mocha": "^5.2.0",
     "mongo-seeding": "^2.2.0",
+    "nyc": "^14.1.1",
     "prettier": "^1.14.2",
     "prettier-eslint": "^8.8.2"
   }

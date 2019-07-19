@@ -13,7 +13,7 @@ seedDatabase(config)
     console.log('Seed complete!')
     process.exit(0)
   })
-  .catch((err) => {
+  .catch(err => {
     console.log(err)
     process.exit(0)
   })
