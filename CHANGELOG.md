@@ -1,3 +1,7 @@
+## v.1.2.1
+
+- Cache API responses only in production mode
+
 ## v.1.2.0
 
 - Use of REDIS to cache API responses
