@@ -241,3 +241,12 @@ exports.sendEmail = async (data, callback) => {
     return callback(true)
   })
 }
+
+exports.removeExtensionFromFile = file => {
+  file = file
+    .split('.')
+    .slice(0, -1)
+    .join('.')
+    .toString()
+  return file
+}
