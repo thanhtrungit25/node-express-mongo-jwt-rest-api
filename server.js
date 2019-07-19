@@ -7,18 +7,6 @@ const helmet = require('helmet')
 const cors = require('cors')
 const passport = require('passport')
 const initMongo = require('./config/mongo')
-const getExpeditiousCache = require('express-expeditious')
-const cache = getExpeditiousCache({
-  // Namespace used to prevent cache conflicts, must be alphanumeric
-  namespace: 'expresscache',
-  // Store cache entries for 1 minute (can also pass milliseconds e.g 60000)
-  defaultTtl: '1 minute',
-  engine: require('expeditious-engine-redis')({
-    // options for the redis driver
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT
-  })
-})
 
 const app = express()
 
@@ -44,8 +32,21 @@ app.use(cors())
 app.use(passport.initialize())
 app.use(compression())
 app.use(helmet())
+
 // Redis cache enabled only for production
 if (process.env.NODE_ENV === 'production') {
+  const getExpeditiousCache = require('express-expeditious')
+  const cache = getExpeditiousCache({
+    // Namespace used to prevent cache conflicts, must be alphanumeric
+    namespace: 'expresscache',
+    // Store cache entries for 1 minute (can also pass milliseconds e.g 60000)
+    defaultTtl: '1 minute',
+    engine: require('expeditious-engine-redis')({
+      // options for the redis driver
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT
+    })
+  })
   app.use(cache)
 }
 app.use(express.static('public'))
