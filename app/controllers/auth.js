@@ -54,7 +54,6 @@ const saveUserAccessAndReturnToken = async (req, user) => {
 }
 
 const returnRegisterToken = (item, userInfo) => {
-  userInfo.verification = item.verification
   return {
     token: generateToken(item._id),
     user: userInfo
@@ -352,10 +351,10 @@ exports.login = async (req, res) => {
   }
 }
 
-const forgotPasswordResponse = item => {
+const forgotPasswordResponse = email => {
   return {
     msg: 'RESET_EMAIL_SENT',
-    verification: item.verification
+    email
   }
 }
 
@@ -363,7 +362,6 @@ exports.register = async (req, res) => {
   try {
     // Gets locale from header 'Accept-Language'
     const locale = req.getLocale()
-    console.log('locale:', locale)
     req = matchedData(req)
     const doesEmailExists = await base.emailExists(req.email)
     if (!doesEmailExists) {
@@ -409,7 +407,7 @@ exports.forgotPassword = async (req, res) => {
     await findUser(data.email)
     const item = await saveForgotPassword(req)
     base.sendResetPasswordEmailMessage(locale, item)
-    res.status(200).json(forgotPasswordResponse(item))
+    res.status(200).json(forgotPasswordResponse(data.email))
   } catch (error) {
     base.handleError(res, error)
   }
