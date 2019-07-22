@@ -2,6 +2,7 @@ const nodemailer = require('nodemailer')
 const mg = require('nodemailer-mailgun-transport')
 const crypto = require('crypto')
 const requestIp = require('request-ip')
+const i18n = require('i18n')
 const algorithm = 'aes-256-ecb'
 const password = process.env.JWT_SECRET
 const User = require('../models/user')
@@ -170,9 +171,15 @@ exports.decrypt = text => {
   }
 }
 
-exports.sendRegistrationEmailMessage = async user => {
-  const subject = 'Verirify your email at myProject'
-  const htmlMessage = `<p>Helo ${user.name}.</p> <p>Welcome! To verify your email, please click in this link:</p> <p>${process.env.FRONTEND_URL}/verify/${user.verification}</p> <p>Thank you.</p>`
+exports.sendRegistrationEmailMessage = async (locale, user) => {
+  i18n.setLocale(locale)
+  const subject = i18n.__('registration.SUBJECT')
+  const htmlMessage = i18n.__(
+    'registration.MESSAGE',
+    user.name,
+    process.env.FRONTEND_URL,
+    user.verification
+  )
   const data = {
     user,
     subject,
@@ -195,9 +202,15 @@ exports.sendRegistrationEmailMessage = async user => {
   }
 }
 
-exports.sendResetPasswordEmailMessage = async user => {
-  const subject = 'Password recovery'
-  const htmlMessage = `<p>To recover the password for user: ${user.email}</p> <p>click the following link:</p> <p>${process.env.FRONTEND_URL}/reset/${user.verification}</p> <p>If this was a mistake, you can ignore this message.</p> <p>Thank you.</p>`
+exports.sendResetPasswordEmailMessage = async (locale, user) => {
+  i18n.setLocale(locale)
+  const subject = i18n.__('forgotPassword.SUBJECT')
+  const htmlMessage = i18n.__(
+    'forgotPassword.MESSAGE',
+    user.email,
+    process.env.FRONTEND_URL,
+    user.verification
+  )
   const data = {
     user,
     subject,
