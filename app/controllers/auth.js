@@ -69,7 +69,6 @@ const registerUser = async req => {
       password: req.password,
       verification: uuid.v4()
     })
-    console.log('user:', user)
     user.save((err, item) => {
       if (err) {
         reject(base.buildErrObject(422, err.message))
@@ -364,6 +363,7 @@ exports.register = async (req, res) => {
   try {
     // Gets locale from header 'Accept-Language'
     const locale = req.getLocale()
+    console.log('locale:', locale)
     req = matchedData(req)
     const doesEmailExists = await base.emailExists(req.email)
     if (!doesEmailExists) {

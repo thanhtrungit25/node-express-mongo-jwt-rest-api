@@ -1,3 +1,7 @@
+## v.2.1.0
+
+- i18n added for registration email and forgot password email
+
 ## v.1.2.3
 
 - FIXED: Password not encrypted when updating in profile [\#3](https://github.com/davellanedam/node-express-mongodb-jwt-rest-api-skeleton/issues/3)
