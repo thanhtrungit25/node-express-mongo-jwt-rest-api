@@ -54,6 +54,9 @@ const saveUserAccessAndReturnToken = async (req, user) => {
 }
 
 const returnRegisterToken = (item, userInfo) => {
+  if (process.env.NODE_ENV === 'test') {
+    userInfo.verification = item.verification
+  }
   return {
     token: generateToken(item._id),
     user: userInfo
@@ -351,11 +354,15 @@ exports.login = async (req, res) => {
   }
 }
 
-const forgotPasswordResponse = email => {
-  return {
+const forgotPasswordResponse = item => {
+  const data = {
     msg: 'RESET_EMAIL_SENT',
-    email
+    email: item.email
   }
+  if (process.env.NODE_ENV === 'test') {
+    data.verification = item.verification
+  }
+  return data
 }
 
 exports.register = async (req, res) => {
@@ -407,7 +414,7 @@ exports.forgotPassword = async (req, res) => {
     await findUser(data.email)
     const item = await saveForgotPassword(req)
     base.sendResetPasswordEmailMessage(locale, item)
-    res.status(200).json(forgotPasswordResponse(data.email))
+    res.status(200).json(forgotPasswordResponse(item))
   } catch (error) {
     base.handleError(res, error)
   }
