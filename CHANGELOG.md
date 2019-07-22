@@ -1,3 +1,7 @@
+## v.2.1.1
+
+- README.md updated
+
 ## v.2.1.0
 
 - i18n added for registration email and forgot password email
