@@ -60,7 +60,6 @@ git clone https://github.com/davellanedam/node-express-mongodb-jwt-rest-api-skel
 cd myproject
 npm install
 npm update
-npm install nodemon -g
 ```
 
 ### Setting up environments (development or production)

@@ -1,3 +1,8 @@
+## v.2.1.2
+
+- FEATURE: Install nodemon in devDependencies
+- README.md updated
+
 ## v.2.1.1
 
 - README.md updated
