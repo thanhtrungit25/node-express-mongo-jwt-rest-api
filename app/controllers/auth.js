@@ -321,9 +321,7 @@ const markResetPasswordAsUsed = async (req, forgot) => {
       if (!item) {
         reject(base.buildErrObject(404, 'NOT_FOUND'))
       }
-      resolve({
-        msg: 'PASSWORD_CHANGED'
-      })
+      resolve(base.buildSuccObject('PASSWORD_CHANGED'))
     })
   })
 }

@@ -20,7 +20,7 @@ chai.use(chaiHttp)
 before(done => {
   setTimeout(() => {
     done()
-  }, 10)
+  }, 50)
 })
 
 describe('*********** CITIES ***********', () => {

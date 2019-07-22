@@ -17,6 +17,11 @@ const email = faker.internet.email()
 
 chai.use(chaiHttp)
 
+before(done => {
+  setTimeout(() => {
+    done()
+  }, 50)
+})
 describe('*********** USERS ***********', () => {
   describe('/POST login', () => {
     it('it should GET token', done => {
