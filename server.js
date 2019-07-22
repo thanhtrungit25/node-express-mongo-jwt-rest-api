@@ -7,11 +7,21 @@ const helmet = require('helmet')
 const cors = require('cors')
 const passport = require('passport')
 const initMongo = require('./config/mongo')
+const i18n = require('i18n')
 
 const app = express()
 
 // Setup express server
 app.set('port', process.env.PORT || 3000)
+
+// i18n
+i18n.configure({
+  locales: ['en', 'es'],
+  directory: `${__dirname}/locales`,
+  defaultLocale: 'en',
+  objectNotation: true
+})
+app.use(i18n.init)
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
