@@ -123,11 +123,13 @@ exports.getItems = async (req, res) => {
  */
 exports.createItem = async (req, res) => {
   try {
+    // Gets locale from header 'Accept-Language'
+    const locale = req.getLocale()
     req = matchedData(req)
     const doesEmailExists = await base.emailExists(req.email)
     if (!doesEmailExists) {
       const item = await createItem(req)
-      base.sendRegistrationEmailMessage(item)
+      base.sendRegistrationEmailMessage(locale, item)
       res.status(201).json(item)
     }
   } catch (error) {
