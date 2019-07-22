@@ -1,5 +1,6 @@
 const base = require('./base')
 const model = require('../models/user')
+const { matchedData } = require('express-validator/filter')
 
 /*********************
  * Private functions *
@@ -21,35 +22,51 @@ const getProfileFromDB = async id => {
 
 const updateProfileInDB = async (req, id) => {
   return new Promise((resolve, reject) => {
-    delete req.body._id
-    delete req.body.role
-    delete req.body.email
-    model.findById(id, '+password', (err, user) => {
+    model.findByIdAndUpdate(
+      id,
+      req,
+      {
+        new: true,
+        runValidators: true,
+        select: '-role -_id -updatedAt -createdAt'
+      },
+      (err, user) => {
+        if (err) {
+          reject(base.buildErrObject(422, err.message))
+        }
+        if (!user) {
+          reject(base.buildErrObject(404, 'NOT_FOUND'))
+        }
+        resolve(user)
+      }
+    )
+  })
+}
+
+const findUser = async id => {
+  return new Promise((resolve, reject) => {
+    model.findById(id, 'password email', (err, item) => {
       if (err) {
         reject(base.buildErrObject(422, err.message))
       }
-      if (!user) {
+      if (!item) {
         reject(base.buildErrObject(404, 'NOT_FOUND'))
       }
+      resolve(item)
+    })
+  })
+}
 
-      // Assign new values to user instance model
-      for (const property in req.body) {
-        user[property] = req.body[property]
+const checkPassword = async (password, user) => {
+  return new Promise((resolve, reject) => {
+    user.comparePassword(password, (err, isMatch) => {
+      if (err) {
+        reject(base.buildErrObject(422, err.message))
       }
-
-      // Save in DB
-      user.save((error, item) => {
-        if (error) {
-          reject(base.buildErrObject(422, err.message))
-        }
-        // Convert user to object and remove unneeded properties
-        const userObject = item.toObject()
-        delete userObject._id
-        delete userObject.password
-        delete userObject.createdAt
-        delete userObject.updatedAt
-        resolve(userObject)
-      })
+      if (!isMatch) {
+        resolve(false)
+      }
+      resolve(true)
     })
   })
 }
@@ -67,10 +84,59 @@ exports.getProfile = async (req, res) => {
   }
 }
 
+const changePasswordInDB = async (id, req) => {
+  return new Promise((resolve, reject) => {
+    model.findById(id, '+password', (err, user) => {
+      if (err) {
+        reject(base.buildErrObject(422, err.message))
+      }
+      if (!user) {
+        reject(base.buildErrObject(404, 'NOT_FOUND'))
+      }
+
+      // Assign new password to user instance model
+      user.password = req.newPassword
+
+      // Save in DB
+      user.save(error => {
+        if (error) {
+          reject(base.buildErrObject(422, error.message))
+        }
+        resolve(base.buildSuccObject('PASSWORD_CHANGED'))
+      })
+    })
+  })
+}
+
 exports.updateProfile = async (req, res) => {
   try {
     const id = await base.isIDGood(req.user._id)
+    req = matchedData(req)
     res.status(200).json(await updateProfileInDB(req, id))
+  } catch (error) {
+    base.handleError(res, error)
+  }
+}
+
+const passwordsDoNotMatch = async () => {
+  return new Promise(resolve => {
+    resolve(base.buildErrObject(409, 'WRONG_PASSWORD'))
+  })
+}
+
+exports.changePassword = async (req, res) => {
+  try {
+    const id = await base.isIDGood(req.user._id)
+    const user = await findUser(id)
+    req = matchedData(req)
+    const isPasswordMatch = await checkPassword(req.oldPassword, user)
+    if (!isPasswordMatch) {
+      base.handleError(res, await passwordsDoNotMatch())
+    } else {
+      // all ok, procceed to change password
+      res.status(200).json(await changePasswordInDB(id, req))
+    }
+
   } catch (error) {
     base.handleError(res, error)
   }
