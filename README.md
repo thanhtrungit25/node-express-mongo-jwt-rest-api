@@ -132,7 +132,7 @@ npm run format
 
 Lint your code with ESLint by typing:
 
-```base
+```bash
 npm run lint
 ```
 
