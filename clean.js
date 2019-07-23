@@ -1,6 +1,6 @@
 require('dotenv-safe').config()
 const initMongo = require('./config/mongo')
-const { removeExtensionFromFile } = require('./app/controllers/base')
+const { removeExtensionFromFile } = require('./app/controllers/utils')
 const fs = require('fs')
 const modelPath = './app/models'
 

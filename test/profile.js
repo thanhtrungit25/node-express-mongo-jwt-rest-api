@@ -93,6 +93,30 @@ describe('*********** PROFILE ***********', () => {
           done()
         })
     })
+    it('it shoud NOT UPDATE profile with not valid URL`s', done => {
+      const user = {
+        name: 'Test123456',
+        urlTwitter: 'hello',
+        urlGitHub: 'hello',
+        phone: '123123123',
+        city: 'HCM',
+        country: 'VietName'
+      }
+      chai
+        .request(server)
+        .patch('/profile')
+        .set('Authorization', `Bearer ${token}`)
+        .send(user)
+        .end((err, res) => {
+          res.should.have.status(422)
+          res.body.should.be.an('object')
+          res.body.should.have.property('errors').that.has.property('msg')
+          res.body.errors.msg[0].should.have
+            .property('msg')
+            .eql('NOT_A_VALID_URL')
+          done()
+        })
+    })
     // it('it should NOT UPDATE profile with email already exists', done => {})
   })
   describe('/POST profile/changePassword', () => {
@@ -129,6 +153,26 @@ describe('*********** PROFILE ***********', () => {
           res.should.have.status(200)
           res.body.should.be.an('object')
           res.body.should.have.property('msg').eql('PASSWORD_CHANGED')
+          done()
+        })
+    })
+    it('it should NOT change a too short password', done => {
+      const data = {
+        oldPassword: '1234',
+        newPassword: '1234'
+      }
+      chai
+        .request(server)
+        .post('/profile/changePassword')
+        .set('Authorization', `Bearer ${token}`)
+        .send(data)
+        .end((err, res) => {
+          res.should.have.status(422)
+          res.body.should.be.an('object')
+          res.body.should.have.property('errors').that.has.property('msg')
+          res.body.errors.msg[0].should.have
+            .property('msg')
+            .eql('PASSWORD_TOO_SHORT_MIN_5')
           done()
         })
     })
