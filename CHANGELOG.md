@@ -1,3 +1,8 @@
+## v2.3.1
+
+- Enable Redis based on env variable
+- API '/' route now renders an html view
+
 ## v.2.3.0
 
 - Added verification in response in test and development env
