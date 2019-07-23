@@ -1,3 +1,7 @@
+## v.2.1.7
+
+- More tests added
+
 ## v.2.1.6
 
 - Better testing
