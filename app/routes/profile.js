@@ -11,7 +11,7 @@ const requireAuth = passport.authenticate('jwt', {
 })
 
 /*
- ROUTES
+ Profile routes
 */
 
 router.get(
@@ -22,6 +22,9 @@ router.get(
   controller.getProfile
 )
 
+/*
+ * Update profile route
+ */
 router.patch(
   '/',
   requireAuth,
@@ -31,6 +34,9 @@ router.patch(
   controller.updateProfile
 )
 
+/*
+ * Change password route
+ */
 router.post(
   '/changePassword',
   requireAuth,

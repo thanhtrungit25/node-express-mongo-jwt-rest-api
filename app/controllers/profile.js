@@ -6,6 +6,10 @@ const { matchedData } = require('express-validator/filter')
  * Private functions *
  *********************/
 
+ /**
+ * Gets profile from database by id
+ * @param {string} id - user id
+ */
 const getProfileFromDB = async id => {
   return new Promise((resolve, reject) => {
     model.findById(id, '-_id -updatedAt -createdAt', (err, user) => {
@@ -20,6 +24,11 @@ const getProfileFromDB = async id => {
   })
 }
 
+/**
+ * Updates profile in database
+ * @param {Object} req - request object
+ * @param {string} id - user id
+ */
 const updateProfileInDB = async (req, id) => {
   return new Promise((resolve, reject) => {
     model.findByIdAndUpdate(
@@ -43,6 +52,10 @@ const updateProfileInDB = async (req, id) => {
   })
 }
 
+/**
+ * Finds user by id
+ * @param {string} email - user id
+ */
 const findUser = async id => {
   return new Promise((resolve, reject) => {
     model.findById(id, 'password email', (err, item) => {
@@ -57,6 +70,12 @@ const findUser = async id => {
   })
 }
 
+/**
+ * Checks is password matches
+ * @param {string} password - password
+ * @param {Object} user - user object
+ * @returns {boolean}
+ */
 const checkPassword = async (password, user) => {
   return new Promise((resolve, reject) => {
     user.comparePassword(password, (err, isMatch) => {
@@ -71,19 +90,11 @@ const checkPassword = async (password, user) => {
   })
 }
 
-/*********************
- * Private functions *
- *********************/
-
-exports.getProfile = async (req, res) => {
-  try {
-    const id = await base.isIDGood(req.user._id)
-    res.status(200).json(await getProfileFromDB(id))
-  } catch (error) {
-    base.handleError(res, error)
-  }
-}
-
+/**
+ * Changes password in database
+ * @param {string} id - user id
+ * @param {Object} req - request object
+ */
 const changePasswordInDB = async (id, req) => {
   return new Promise((resolve, reject) => {
     model.findById(id, '+password', (err, user) => {
@@ -108,6 +119,29 @@ const changePasswordInDB = async (id, req) => {
   })
 }
 
+/*********************
+ * Private functions *
+ *********************/
+
+/**
+ * Get profile function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
+exports.getProfile = async (req, res) => {
+  try {
+    const id = await base.isIDGood(req.user._id)
+    res.status(200).json(await getProfileFromDB(id))
+  } catch (error) {
+    base.handleError(res, error)
+  }
+}
+
+/**
+ * Update profile function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
 exports.updateProfile = async (req, res) => {
   try {
     const id = await base.isIDGood(req.user._id)
@@ -124,6 +158,11 @@ const passwordsDoNotMatch = async () => {
   })
 }
 
+/**
+ * Change password function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
 exports.changePassword = async (req, res) => {
   try {
     const id = await base.isIDGood(req.user._id)
