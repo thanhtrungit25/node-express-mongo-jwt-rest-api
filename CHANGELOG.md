@@ -1,3 +1,8 @@
+## v.2.2.1
+
+- Added badge in README.md
+- Use of travis ci to automate build and deploy
+
 ## v.2.2.0
 
 - Upgrade prettier-eslint
