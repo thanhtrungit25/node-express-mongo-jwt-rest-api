@@ -71,3 +71,5 @@ typings/
 .openode
 docker-compose.yml
 Dockerfile
+# ignore production configuration
+.env.production
