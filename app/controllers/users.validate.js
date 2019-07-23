@@ -2,6 +2,9 @@ const base = require('./utils')
 const validator = require('validator')
 const { check, validationResult } = require('express-validator/check')
 
+/**
+ * Validates create new item request
+ */
 exports.createItem = [
   check('name')
     .exists()
@@ -75,6 +78,9 @@ exports.createItem = [
   }
 ]
 
+/**
+ * Validates update item request
+ */
 exports.updateItem = [
   check('name')
     .exists()
@@ -111,6 +117,9 @@ exports.updateItem = [
   }
 ]
 
+/**
+ * Validates get item request
+ */
 exports.getItem = [
   check('id')
     .exists()
@@ -128,6 +137,9 @@ exports.getItem = [
   }
 ]
 
+/**
+ * Validates delete item request
+ */
 exports.deleteItem = [
   check('id')
     .exists()

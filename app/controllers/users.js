@@ -10,6 +10,11 @@ const uuid = require('uuid')
  * Private functions *
  *********************/
 
+ /**
+ * Gets items from database
+ * @param {Object} req - request object
+ * @param {Object} query - query object
+ */
 const getItems = async (req, query) => {
   const options = await base.listInitOptions(req)
   return new Promise((resolve, reject) => {
@@ -22,6 +27,11 @@ const getItems = async (req, query) => {
   })
 }
 
+/**
+ * Get item function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
 const getItem = async id => {
   return new Promise((resolve, reject) => {
     model.findById(id, (err, item) => {
@@ -36,6 +46,11 @@ const getItem = async id => {
   })
 }
 
+/**
+ * Updates an item in database by id
+ * @param {string} id - item id
+ * @param {Object} req - request object
+ */
 const updateItem = async (id, req) => {
   return new Promise((resolve, reject) => {
     model.findByIdAndUpdate(
@@ -58,6 +73,10 @@ const updateItem = async (id, req) => {
   })
 }
 
+/**
+ * Deletes an item from database by id
+ * @param {string} id - id of item
+ */
 const deleteItem = async id => {
   return new Promise((resolve, reject) => {
     model.findByIdAndRemove(id, (err, item) => {
@@ -72,6 +91,10 @@ const deleteItem = async id => {
   })
 }
 
+/**
+ * Creates a new item in database
+ * @param {Object} req - request object
+ */
 const createItem = async req => {
   return new Promise((resolve, reject) => {
     const user = new model({
