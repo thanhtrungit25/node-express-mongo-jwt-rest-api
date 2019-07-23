@@ -1,3 +1,7 @@
+## v.2.1.6
+
+- Better testing
+
 ## v.2.1.4
 
 - Verification added only in tests responses at registration and forgot password
