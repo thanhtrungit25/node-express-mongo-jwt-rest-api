@@ -1,3 +1,10 @@
+## v.2.3.0
+
+- Added verification in response in test and development env
+- Added verification for default admin user in seeding
+- Added tests for cities and users with filters
+- All functions documented with JSDocs
+
 ## v.2.2.1
 
 - Added badge in README.md
