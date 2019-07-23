@@ -8,6 +8,7 @@ const cors = require('cors')
 const passport = require('passport')
 const initMongo = require('./config/mongo')
 const i18n = require('i18n')
+const path = require('path')
 
 const app = express()
 
@@ -60,6 +61,9 @@ if (process.env.USE_REDIS === 'true') {
   app.use(cache)
 }
 app.use(express.static('public'))
+app.set('views', path.join(__dirname, 'views'))
+app.engine('html', require('ejs').renderFile)
+app.set('view engine', 'html')
 app.use(require('./app/routes'))
 app.listen(app.get('port'))
 

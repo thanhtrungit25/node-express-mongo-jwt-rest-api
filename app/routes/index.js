@@ -26,7 +26,7 @@ fs.readdirSync(routesPath).filter(file => {
  */
 
 router.get('/', (req, res) => {
-  res.send('API Home')
+  res.render('index')
 })
 
 /*
