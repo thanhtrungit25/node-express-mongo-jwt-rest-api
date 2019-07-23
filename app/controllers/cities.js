@@ -1,6 +1,6 @@
 const model = require('../models/city')
 const { matchedData } = require('express-validator/filter')
-const base = require('./base')
+const base = require('./utils')
 
 /*********************
  * Private functions *

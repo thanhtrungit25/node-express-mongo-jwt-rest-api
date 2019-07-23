@@ -1,4 +1,4 @@
-const base = require('./base')
+const base = require('./utils')
 const model = require('../models/user')
 const { matchedData } = require('express-validator/filter')
 

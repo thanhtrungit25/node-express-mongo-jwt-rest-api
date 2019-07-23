@@ -1,4 +1,4 @@
-const base = require('./base')
+const base = require('./utils')
 const { check, validationResult } = require('express-validator/check')
 
 exports.register = [

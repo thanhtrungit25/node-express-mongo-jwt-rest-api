@@ -7,19 +7,40 @@ const algorithm = 'aes-256-ecb'
 const password = process.env.JWT_SECRET
 const User = require('../models/user')
 
+/**
+ * Builds sorting
+ * @param {string} sort - field to sort from
+ * @param {number} order - order for query (1, -1)
+ */
 const buildSort = (sort, order) => {
   const sortBy = {}
   sortBy[sort] = order
   return sortBy
 }
 
+/**
+ * Gets IP from user
+ * @param {*} req - request object
+ */
 exports.getIP = req => requestIp.getClientIp(req)
 
+/**
+ * Gets browser info from user
+ * @param {*} req - request object
+ */
 exports.getBrowserInfo = req => req.headers['user-agent']
 
+/**
+ * Gets country from user using CloudFlare header 'cf-ipcountry'
+ * @param {*} req - request object
+ */
 exports.getCountry = req =>
   req.headers['cf-ipcountry'] ? req.headers['cf-ipcountry'] : 'XX'
 
+/**
+ * Checks User model if user with an specific email exists
+ * @param {string} email - user email
+ */
 exports.emailExists = async email => {
   return new Promise((resolve, reject) => {
     User.findOne(
@@ -39,6 +60,11 @@ exports.emailExists = async email => {
   })
 }
 
+/**
+ * Checks User model if user with an specific email exists but excluding user id
+ * @param {string} id - user id
+ * @param {string} email - user email
+ */
 exports.emailExistsExcludingMyself = async (id, email) => {
   return new Promise((resolve, reject) => {
     User.findOne(
@@ -61,6 +87,11 @@ exports.emailExistsExcludingMyself = async (id, email) => {
   })
 }
 
+/**
+ * Builds error object
+ * @param {number} code - error code
+ * @param {string} message - error text
+ */
 exports.buildErrObject = (code, message) => {
   return {
     code,
@@ -68,14 +99,21 @@ exports.buildErrObject = (code, message) => {
   }
 }
 
+/**
+ * Builds success object
+ * @param {string} message - success text
+ */
 exports.buildSuccObject = msg => {
   return {
     msg
   }
 }
 
+/**
+ * Checks if given ID is good for MongoDB
+ * @param {string} id - id to check
+ */
 exports.isIDGood = async id => {
-  console.log('id:', id)
   return new Promise((resolve, reject) => {
     const goodID = String(id).match(/^[0-9a-fA-F]{24}$/)
     return goodID
@@ -84,6 +122,12 @@ exports.isIDGood = async id => {
   })
 }
 
+/**
+ * Checks the query string for filtering the records
+ * query.filter shoud be the text to search (string)
+ * query.fields shoud be the fields to search into (array)
+ * @param {Object} query - query object
+ */
 exports.checkQueryString = async query => {
   // eslint-disable-next-line consistent-return
   return new Promise((resolve, reject) => {
@@ -119,6 +163,10 @@ exports.checkQueryString = async query => {
   })
 }
 
+/**
+ * Builds initial options for query
+ * @param {Object} query - query object
+ */
 exports.listInitOptions = async req => {
   const order = req.query.order || -1
   const sort = req.query.sort || 'createdAt'
@@ -140,6 +188,9 @@ exports.cleanPaginationID = result => {
   return result
 }
 
+/**
+ * Handles error by printing to console in development env and builds and sends an error response
+ */
 exports.handleError = (res, err) => {
   // Prints error in console
   if (process.env.NODE_ENV === 'development') {
@@ -153,6 +204,10 @@ exports.handleError = (res, err) => {
   })
 }
 
+/**
+ * Encrypts text
+ * @param {string} text - text to encrypt
+ */
 exports.encrypt = text => {
   const cipher = crypto.createCipher(algorithm, password)
   let crypted = cipher.update(text, 'utf8', 'hex')
@@ -160,6 +215,10 @@ exports.encrypt = text => {
   return crypted
 }
 
+/**
+ * Encrypts text
+ * @param {string} text - text to encrypt
+ */
 exports.decrypt = text => {
   try {
     const decipher = crypto.createDecipher(algorithm, password)
@@ -171,6 +230,11 @@ exports.decrypt = text => {
   }
 }
 
+/**
+ * Sends registration email
+ * @param {string} locale - locale
+ * @param {Object} user - user object
+ */
 exports.sendRegistrationEmailMessage = async (locale, user) => {
   i18n.setLocale(locale)
   const subject = i18n.__('registration.SUBJECT')
@@ -202,6 +266,11 @@ exports.sendRegistrationEmailMessage = async (locale, user) => {
   }
 }
 
+/**
+ * Sends reset password email
+ * @param {string} locale - locale
+ * @param {Object} user - user object
+ */
 exports.sendResetPasswordEmailMessage = async (locale, user) => {
   i18n.setLocale(locale)
   const subject = i18n.__('forgotPassword.SUBJECT')
@@ -232,6 +301,11 @@ exports.sendResetPasswordEmailMessage = async (locale, user) => {
   }
 }
 
+/**
+ * Sends email
+ * @param {Object} data - data
+ * @param {fn} callback - callback
+ */
 exports.sendEmail = async (data, callback) => {
   const auth = {
     auth: {
@@ -255,6 +329,10 @@ exports.sendEmail = async (data, callback) => {
   })
 }
 
+/**
+ * Removes extensions from file
+ * @param {string} file - filename
+ */
 exports.removeExtensionFromFile = file => {
   file = file
     .split('.')

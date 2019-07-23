@@ -1,6 +1,6 @@
 const { matchedData } = require('express-validator/filter')
 const jwt = require('jsonwebtoken')
-const base = require('./base')
+const base = require('./utils')
 const User = require('../models/user')
 const ForgotPassword = require('../models/forgotPassword')
 const UserAccess = require('../models/userAccess')
