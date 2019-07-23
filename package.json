@@ -1,6 +1,6 @@
 {
   "name": "node-express-mongodb-jwt-rest-api-skeleton",
-  "version": "2.1.8",
+  "version": "2.2.0",
   "description": "Node.js express.js MongoDB JWT REST API - Basic Project Skeleton. Great for building an MVP for your front-end app (Vue, react, angular, or anything that can consume an API)",
   "main": "index.js",
   "author": "",
@@ -55,7 +55,7 @@
     "nodemon": "^1.19.1",
     "nyc": "^14.1.1",
     "prettier": "^1.14.2",
-    "prettier-eslint": "^8.8.2"
+    "prettier-eslint": "^9.0.0"
   },
   "keywords": [
     "javascript",

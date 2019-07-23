@@ -1,3 +1,7 @@
+## v.2.2.0
+
+- Upgrade prettier-eslint
+
 ## v.2.1.8 (Mar 4, 2019)
 
 - More tests added
