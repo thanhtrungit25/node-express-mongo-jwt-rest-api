@@ -9,6 +9,10 @@ const moment = require('moment')
 const LOGIN_ATTEMPTS = 5
 const HOURS_TO_BLOCK = 2
 
+/**
+ * Generates a token
+ * @param {Object} user - user object
+ */
 const generateToken = user => {
   const obj = {
     _id: user
@@ -20,6 +24,10 @@ const generateToken = user => {
   )
 }
 
+/**
+ * Creates an object with user info
+ * @param {Object} req - request object
+ */
 const setUserInfo = req => {
   const user = {
     _id: req._id,
@@ -35,6 +43,11 @@ const setUserInfo = req => {
   return user
 }
 
+/**
+ * Saves a new user access and then return token
+ * @param {Object} req - request object
+ * @param {Object} user - user object
+ */
 const saveUserAccessAndReturnToken = async (req, user) => {
   return new Promise((resolve, reject) => {
     const userAccess = new UserAccess({
@@ -84,6 +97,10 @@ const registerUser = async req => {
   })
 }
 
+/**
+ * Checks if blockExpires from user is greater than now
+ * @param {*} user - user object
+ */
 const userIsBlocked = async user => {
   return new Promise((resolve, reject) => {
     if (user.blockExpires > moment()) {
@@ -93,8 +110,12 @@ const userIsBlocked = async user => {
   })
 }
 
-const blockIsExpired = ({ loginAttempts, blockExpires }) =>
-  loginAttempts > LOGIN_ATTEMPTS && blockExpires <= moment()
+/**
+ * Checks that login attempts are greater than specified in constant and also that blockExpires of user is less than now
+ * @param {Object} user - user object
+ */
+const blockIsExpired = user =>
+  user.loginAttempts > LOGIN_ATTEMPTS && user.blockExpires <= moment()
 
 const checkLoginAttemptsAndBlockExpires = async user => {
   return new Promise((resolve, reject) => {
@@ -115,6 +136,10 @@ const checkLoginAttemptsAndBlockExpires = async user => {
   })
 }
 
+/**
+ * Finds user by email
+ * @param {string} email - user-s email
+ */
 const findUser = async email => {
   return new Promise((resolve, reject) => {
     User.findOne(
@@ -135,6 +160,11 @@ const findUser = async email => {
   })
 }
 
+/**
+ * Checks is password matches
+ * @param {string} password  - password
+ * @param {object} user - user object
+ */
 const checkPassword = async (password, user) => {
   return new Promise((resolve, reject) => {
     user.comparePassword(password, (err, isMatch) => {
@@ -149,6 +179,10 @@ const checkPassword = async (password, user) => {
   })
 }
 
+/**
+ * Saves login attempts to database
+ * @param {Object} user - user object
+ */
 const saveLoginAttemptsToDB = async user => {
   return new Promise((resolve, reject) => {
     user.save((err, result) => {
@@ -162,6 +196,10 @@ const saveLoginAttemptsToDB = async user => {
   })
 }
 
+/**
+ * Blocks a user by setting blockExpires to the specified date based on constant HOURS_TO_BLOCK
+ * @param {Object} user - user object
+ */
 const blockUser = user => {
   return new Promise((resolve, reject) => {
     user.blockExpires = moment().add(HOURS_TO_BLOCK, 'hours')
@@ -176,6 +214,12 @@ const blockUser = user => {
   })
 }
 
+/**
+ * Adds one attempt to loginAttempts, then compares loginAttempts with the constant LOGIN_ATTEMPTS
+ * - if is less than returns wrong password
+ * - else return blockUser
+ * @param {Object} user - user object
+ */
 const passwordsDoNotMatch = async user => {
   user.loginAttempts += 1
   await saveLoginAttemptsToDB(user)
@@ -189,6 +233,11 @@ const passwordsDoNotMatch = async user => {
   })
 }
 
+/**
+ * Checks againts user if has quested role
+ * @param {Object} data - data object
+ * @param {*} next - next callback
+ */
 const checkPermissions = async (data, next) => {
   return new Promise((resolve, reject) => {
     User.findById(data.id, (err, result) => {
@@ -335,6 +384,11 @@ const markResetPasswordAsUsed = async (req, forgot) => {
  * Public functions *
  ********************/
 
+/**
+ * Login function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
 exports.login = async (req, res) => {
   try {
     const data = matchedData(req)
@@ -369,6 +423,11 @@ const forgotPasswordResponse = item => {
   return data
 }
 
+/**
+ * Register function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
 exports.register = async (req, res) => {
   try {
     // Gets locale from header 'Accept-Language'
@@ -388,6 +447,10 @@ exports.register = async (req, res) => {
   }
 }
 
+/**
+ * Roles authorization function called by route
+ * @param {Array} roles - roles specified on the route
+ */
 exports.roleAuthorization = roles => async (req, res, next) => {
   try {
     const data = {
@@ -400,6 +463,11 @@ exports.roleAuthorization = roles => async (req, res, next) => {
   }
 }
 
+/**
+ * Verify function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
 exports.verify = async (req, res) => {
   try {
     req = matchedData(req)
@@ -410,6 +478,11 @@ exports.verify = async (req, res) => {
   }
 }
 
+/**
+ * Forgot password function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
 exports.forgotPassword = async (req, res) => {
   try {
     // Gets locale from header 'Accept-Language'
@@ -424,6 +497,11 @@ exports.forgotPassword = async (req, res) => {
   }
 }
 
+/**
+ * Reset password function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
 exports.resetPassword = async (req, res) => {
   try {
     const data = matchedData(req)
