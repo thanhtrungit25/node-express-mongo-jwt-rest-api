@@ -43,9 +43,8 @@ app.use(passport.initialize())
 app.use(compression())
 app.use(helmet())
 
-// Redis cache enabled only for production
-if (process.env.NODE_ENV === 'production') {
-  console.log('redis init production mode')
+// Redis cache enabled by env variable
+if (process.env.USE_REDIS === 'true') {
   const getExpeditiousCache = require('express-expeditious')
   const cache = getExpeditiousCache({
     // Namespace used to prevent cache conflicts, must be alphanumeric
