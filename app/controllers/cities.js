@@ -5,6 +5,10 @@ const base = require('./utils')
 /*********************
  * Private functions *
  *********************/
+
+ /**
+ * Gets all items from database
+ */
 const getAllItemsFromDB = async () => {
   return new Promise((resolve, reject) => {
     model.find(
@@ -25,6 +29,11 @@ const getAllItemsFromDB = async () => {
   })
 }
 
+/**
+ * Gets items from database
+ * @param {Object} req - request object
+ * @param {Object} query - query object
+ */
 const getItemsFromDB = async (req, query) => {
   const options = await base.listInitOptions(req)
   return new Promise((resolve, reject) => {
@@ -37,6 +46,10 @@ const getItemsFromDB = async (req, query) => {
   })
 }
 
+/**
+ * Checks if a city already exists in database
+ * @param {string} name - name of item
+ */
 const cityExists = async name => {
   return new Promise((resolve, reject) => {
     model.findOne(
@@ -56,6 +69,11 @@ const cityExists = async name => {
   })
 }
 
+/**
+ * Checks if a city already exists excluding itself
+ * @param {string} id - id of item
+ * @param {string} name - name of item
+ */
 const cityExistsExcludingItSelf = async (id, name) => {
   return new Promise((resolve, reject) => {
     model.findOne(
@@ -78,6 +96,10 @@ const cityExistsExcludingItSelf = async (id, name) => {
   })
 }
 
+/**
+ * Creates a new item in database
+ * @param {Object} req - request object
+ */
 const createItemInDB = async req => {
   return new Promise((resolve, reject) => {
     model.create(req, (err, item) => {
@@ -89,6 +111,10 @@ const createItemInDB = async req => {
   })
 }
 
+/**
+ * Gets item from database by id
+ * @param {string} id - item id
+ */
 const getItemFromDB = async id => {
   return new Promise((resolve, reject) => {
     model.findById(id, (err, item) => {
@@ -103,6 +129,11 @@ const getItemFromDB = async id => {
   })
 }
 
+/**
+ * Updates an item in database by id
+ * @param {string} id - item id
+ * @param {Object} req - request object
+ */
 const updateItemInDB = async (id, req) => {
   return new Promise((resolve, reject) => {
     model.findByIdAndUpdate(
@@ -142,6 +173,11 @@ const deleteItemFromDB = async id => {
  * Public functions *
  ********************/
 
+ /**
+ * Get all items function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
 exports.getAllItems = async (req, res) => {
   try {
     res.status(200).json(await getAllItemsFromDB())
@@ -150,6 +186,11 @@ exports.getAllItems = async (req, res) => {
   }
 }
 
+/**
+ * Get items function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
 exports.getItems = async (req, res) => {
   try {
     const query = await base.checkQueryString(req.query)
@@ -159,6 +200,11 @@ exports.getItems = async (req, res) => {
   }
 }
 
+/**
+ * Get item function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
 exports.getItem = async (req, res) => {
   try {
     req = matchedData(req)
@@ -169,6 +215,11 @@ exports.getItem = async (req, res) => {
   }
 }
 
+/**
+ * Create item function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
 exports.createItem = async (req, res) => {
   try {
     req = matchedData(req)
@@ -181,6 +232,11 @@ exports.createItem = async (req, res) => {
   }
 }
 
+/**
+ * Update item function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
 exports.updateItem = async (req, res) => {
   try {
     req = matchedData(req)
@@ -194,6 +250,11 @@ exports.updateItem = async (req, res) => {
   }
 }
 
+/**
+ * Delete item function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
 exports.deleteItem = async (req, res) => {
   try {
     req = matchedData(req)
