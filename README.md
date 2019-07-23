@@ -3,6 +3,8 @@
 [![Author](http://img.shields.io/badge/author-@davellanedam-blue.svg?style=flat-square)](https://twitter.com/davellanedam)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/davellanedam/node-express-mongodb-jwt-rest-api-skeleton/blob/master/LICENSE)
 [![Release](https://img.shields.io/github/release/davellanedam/node-express-mongodb-jwt-rest-api-skeleton.svg?style=flat-square)](https://github.com/davellanedam/node-express-mongodb-jwt-rest-api-skeleton/releases)
+####Master branch build status:
+![](https://travis-ci.org/thanhtrungit25/node-express-mongo-jwt-rest-api.svg?branch=master)
 
 ## Getting started
 
