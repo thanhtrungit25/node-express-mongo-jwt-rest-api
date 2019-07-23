@@ -11,18 +11,13 @@ const loginDetails = {
   email: 'admin@admin.com',
   password: '12345'
 }
-let createdID = ''
+const createdID = []
 let verification = ''
 let verificationFogot = ''
 const email = faker.internet.email()
 
 chai.use(chaiHttp)
 
-before(done => {
-  setTimeout(() => {
-    done()
-  }, 50)
-})
 describe('*********** AUTH ***********', () => {
 
   describe('/POST login', () => {
@@ -33,7 +28,7 @@ describe('*********** AUTH ***********', () => {
         .send(loginDetails)
         .end((err, res) => {
           res.should.have.status(200)
-          res.body.should.have.property('token')
+          res.body.should.include.keys('token')
           done()
         })
     })
@@ -53,7 +48,7 @@ describe('*********** AUTH ***********', () => {
         .end((err, res) => {
           res.should.have.status(201)
           res.body.should.include.keys('token', 'user')
-          createdID = res.body.user._id
+          createdID.push(res.body.user._id)
           verification = res.body.user.verification
           done()
         })
@@ -131,11 +126,11 @@ describe('*********** AUTH ***********', () => {
 
 })
 after(() => {
-  User.deleteOne({
-    _id: createdID
-  }, (error) => {
-    if (error !== null) {
-      console.log(error)
-    }
+  createdID.forEach(id => {
+    User.findByIdAndRemove(id, err => {
+      if (err) {
+        console.log(err)
+      }
+    })
   })
 })

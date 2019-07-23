@@ -17,12 +17,6 @@ const name = faker.random.words()
 
 chai.use(chaiHttp)
 
-before(done => {
-  setTimeout(() => {
-    done()
-  }, 50)
-})
-
 describe('*********** CITIES ***********', () => {
 
   describe('/POST login', () => {
@@ -114,25 +108,18 @@ describe('*********** CITIES ***********', () => {
 
   describe('/GET/:id city', () => {
     it('it should GET a city by the given id', done => {
-      const city = new City({
-        name
-      })
-      city.save((err, result) => {
-        if (result) {
-          chai
-            .request(server)
-            .get(`/cities/${result._id}`)
-            .set('Authorization', `Bearer ${token}`)
-            .end((error, res) => {
-              res.should.have.status(200)
-              res.body.should.be.a('object')
-              res.body.should.have.property('name')
-              // res.body.should.have.property('_id').eql(result._id)
-              createdID.push(result._id)
-            })
-        }
-        done()
-      })
+      const id = createdID.slice(-1).pop()
+      chai
+        .request(server)
+        .get(`/cities/${id}`)
+        .set('Authorization', `Bearer ${token}`)
+        .end((err, res) => {
+          res.should.have.status(200)
+          res.body.should.be.an('object')
+          res.body.should.have.property('name')
+          res.body.should.have.property('_id').eql(id)
+          done()
+        })
     })
   })
 })
